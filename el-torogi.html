@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EL TOROGI - Vintage & Thrifted Clothing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#dc338b',
+                        secondary: '#FF9EAA',
+                        dark: '#2a2a2a',
+                        light: '#FFF5F6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+         :root {
+            --transition-speed: 0.5s;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFF5F6;
+            color: #2a2a2a;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5fb72c55-ff42-4662-ad46-6937a651a74c.png') no-repeat center center;
+            background-size: cover;
+        }
+        
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .btn-primary {
+            background-color: #dc338b;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .btn-primary:hover {
+            background-color: #dc338b;
+            transform: translateY(-2px);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 101, 132, 0.2);
+        }
+        
+        .nav-link:hover {
+            color: #dc338b;
+            border-bottom: 2px solid #dc338b;
+        }
+        
+        .promo-banner {
+            background: linear-gradient(135deg, #dc338b 0%, #FF9EAA 100%);
+        }
+        
+        .countdown-box {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .carousel-container {
+            position: relative;
+            max-width: 1400px;
+            margin: 0 auto;
+            overflow: hidden;
+            /* border-radius: 8px; */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+        
+        .carousel-slide img {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .slide-content {
+            position: absolute;
+            bottom: 3%;
+            left: 7%;
+            max-width: 500px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 1s ease-in-out;
+        }
+        
+        .carousel-slide.active .slide-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .slide-content h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+        
+        .slide-content p {
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .shop-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--secondary-color);
+            color: #dc338b;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .shop-btn:hover {
+            background-color: #dc338b;
+            color: #fff;
+        }
+        
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 10;
+        }
+        
+        .carousel-btn {
+            background-color: rgba(255, 255, 255, 0.7);
+            color: var(--primary-color);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .carousel-btn:hover {
+            background-color: white;
+            transform: scale(1.1);
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            z-index: 10;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .indicator.active {
+            background-color: white;
+            transform: scale(1.2);
+        }
+        /* Responsive adjustments */
+        
+        @media (max-width: 992px) {
+            .slide-content {
+                left: 30px;
+                bottom: 30px;
+                padding: 20px;
+            }
+            .slide-content h2 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .carousel-slide img {
+                height: 500px;
+            }
+            .slide-content {
+                max-width: 80%;
+                left: 10%;
+                bottom: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .carousel-slide img {
+                height: 400px;
+            }
+            .slide-content {
+                padding: 15px;
+                width: 100%;
+                left: 0;
+                bottom: 0;
+                max-width: 100%;
+                border-radius: 0;
+                zoom: .8;
+            }
+            .slide-content h2 {
+                font-size: 1.2rem;
+            }
+            .slide-content p {
+                font-size: 0.9rem;
+                margin-bottom: 15px;
+            }
+            .shop-btn {
+                padding: 10px 20px;
+            }
+            .carousel-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            .carousel-controls {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md py-4 sticky top-0 z-50">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="text-2xl playfair font-bold text-primary" style="display: inline-flex;align-items: center;"><img src="eltorogi.png" alt="el torogi logo" style="width: 50px;" class="mr-2">EL TOROGI</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link py-2 text-gray-600 hover:text-gray-800">Home</a>
+                <a href="#shop" class="nav-link py-2 text-gray-600 hover:text-gray-800">Shop</a>
+                <a href="#promos" class="nav-link py-2 text-gray-600 hover:text-gray-800">Promos</a>
+                <a href="#about" class="nav-link py-2 text-gray-600 hover:text-gray-800">About</a>
+                <a href="#contact" class="nav-link py-2 text-gray-600 hover:text-gray-800">Contact</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="p-2 rounded-full bg-light hover:bg-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </button>
+                <button class="p-2 rounded-full bg-light hover:bg-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </button>
+                <button class="md:hidden p-2 rounded-full bg-light hover:bg-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <!-- <section id="home" class="hero min-h-[70vh] flex items-center justify-center text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="playfair text-5xl md:text-7xl font-bold mb-6">EL TOROGI</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Curated vintage & thrifted clothing from around the Philippines</p>
+            <button class="btn-primary text-white px-8 py-3 rounded-full text-lg font-medium">Shop Collection</button>
+        </div>
+    </section> -->
+    <div class="carousel-container">
+        <div class="carousel-slides">
+            <div class="carousel-slide active">
+                <img src="https://scontent.fcrk1-1.fna.fbcdn.net/v/t39.30808-6/490211783_23979884734946958_4316566363742259566_n.jpg?_nc_cat=107&cb=99be929b-7bdcbe47&ccb=1-7&_nc_sid=f727a1&_nc_ohc=8gFloYVFqW0Q7kNvwEZeyCp&_nc_oc=Adk2e8NAJF4C1xfW9u-jpCXZcwSo0J4Rc6XZ9_4Z0y-ALGHGGPbRHSZ0mqnd3y8Dvz4&_nc_zt=23&_nc_ht=scontent.fcrk1-1.fna&_nc_gid=SzdsUx9fGh1hCUIZ1bZsLA&oh=00_AfXKzVFlNXAV7OFMUcpKvziNlTyVJXfEoZJKj-KtamTL0A&oe=68A7310F"
+                    alt="Contemporary women's fashion collection featuring elegant dresses and accessories on models in a studio setting" style="object-position: 0 40%;" />
+                <div class="slide-content">
+                    <h2>Summer Collection 2025</h2>
+                    <p>Discover our vibrant new arrivals for the season with fresh colors and lightweight fabrics perfect for spring days.</p>
+                    <a href="#" class="shop-btn">Shop Now</a>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="https://scontent.fcrk1-4.fna.fbcdn.net/v/t39.30808-6/490498019_23979889684946463_3967684315786151405_n.jpg?_nc_cat=111&cb=99be929b-7bdcbe47&ccb=1-7&_nc_sid=f727a1&_nc_ohc=k_oTlhxIwSgQ7kNvwFPAmRE&_nc_oc=AdllU0J6b4akI9EfP-8uiDoReAtXUDBdxi1Ej1JLez29m277CHVzlzf8oUA0CzVRLP4&_nc_zt=23&_nc_ht=scontent.fcrk1-4.fna&_nc_gid=G1OMnwocLm7d6z0HPIzIqg&oh=00_AfX7qsYvXaE6xWUVC2lgd-sVUGk8nKboseT7m5VBLqiwMg&oe=68A746BA"
+                    alt="Casual men's wear display featuring seasonal jackets, shirts and jeans stylishly arranged" style="object-position: 0 60%;" />
+                <div class="slide-content">
+                    <h2>Spring Collection 2025</h2>
+                    <p>Upgrade your wardrobe with our premium selection of timeless Spring pieces designed for comfort and style.</p>
+                    <a href="#" class="shop-btn">Explore</a>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="https://scontent.fcrk1-3.fna.fbcdn.net/v/t39.30808-6/464962616_27288231314154001_7140985808099808327_n.jpg?_nc_cat=100&cb=99be929b-7bdcbe47&ccb=1-7&_nc_sid=f727a1&_nc_ohc=SqhDJ8pvZ5QQ7kNvwFR4-JA&_nc_oc=AdlHNT1h1QwZXZfGTHOfkb5TsVTPkesR-s2qnReT61jPcss3xaBQ1cm3G1U2AmtAhdY&_nc_zt=23&_nc_ht=scontent.fcrk1-3.fna&_nc_gid=qlCND1_F8cMcyBVH9DIE3w&oh=00_AfU5cGBQ03cBJDzpqjT0BvuEE22KOtJDgV5tvkvPe4xJnQ&oe=68A75785"
+                    alt="Trendy kids clothing collection displayed in a playful setting with colorful backgrounds" />
+                <div class="slide-content">
+                    <h2>Winter Collection 2025</h2>
+                    <p>Adorable outfits for winter that combine comfort with playful designs and durable fabrics.</p>
+                    <a href="#" class="shop-btn">View Collection</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-controls">
+            <button class="carousel-btn prev">❮</button>
+            <button class="carousel-btn next">❯</button>
+        </div>
+
+        <div class="carousel-indicators">
+            <div class="indicator active"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+        </div>
+    </div>
+
+    <!-- Featured Products -->
+    <section id="shop" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="playfair text-3xl md:text-4xl font-bold mb-4 text-primary">Our Best Sellers</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Discover hand-picked vintage items from local ukay-ukay finds</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 border-2 border-light hover:border-secondary">
+                    <div class="relative overflow-hidden">
+                        <img src="https://scontent.fcrk1-4.fna.fbcdn.net/v/t39.30808-6/512665076_1036903855323718_417940582011157819_n.jpg?_nc_cat=102&cb=99be929b-7bdcbe47&ccb=1-7&_nc_sid=833d8c&_nc_ohc=-9swRCnNMZAQ7kNvwEGDoe4&_nc_oc=AdkCt6-RiGcAnLqZi04QBKBQ77EqvLxsnZSZ9L55tLn2wPcvwIaXMmGc47b6PZ3u1VE&_nc_zt=23&_nc_ht=scontent.fcrk1-4.fna&_nc_gid=N3asJs098terGItphwPnBg&oh=00_AfXipgI0AAyPljNs42CNT3Yj6xBC9Ml3VrlWgjeJmWYwvQ&oe=68A7415D"
+                            alt="Vintage denim jacket with embroidered patches" class="w-full h-80 object-cover" />
+                        <div class="absolute top-2 right-2 bg-light rounded-full p-2 shadow-md hover:bg-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-1">Vintage Designer Bags</h3>
+                        <p class="text-gray-600 text-sm mb-2">From Baguio ukay-ukay finds</p>
+                        <p class="font-bold text-primary">₱1,299</p>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 border-2 border-light hover:border-secondary">
+                    <div class="relative overflow-hidden">
+                        <img src="https://scontent.fcrk1-5.fna.fbcdn.net/v/t39.30808-6/516599948_1044774441203326_743824318027572952_n.jpg?_nc_cat=103&cb=99be929b-7bdcbe47&ccb=1-7&_nc_sid=833d8c&_nc_ohc=4TCe3x7VgRQQ7kNvwGLXIaq&_nc_oc=AdmW6JRMb0bApB7YG8AZIoQsJdPo08z8cZYNgm3EI7mAEEPy-rw8SpCblxRCLzxYp_w&_nc_zt=23&_nc_ht=scontent.fcrk1-5.fna&_nc_gid=UXn9xEIOivzZMBn1zapByg&oh=00_AfVO3vYgdA8A8OxnrYT44WHZ9F5mm_rRc1dfWgqpm-G8SQ&oe=68A74B8D"
+                            alt="Retro graphic t-shirt with floral pattern" class="w-full h-80 object-cover" />
+                        <div class="absolute top-2 right-2 bg-light rounded-full p-2 shadow-md hover:bg-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-1">Retro Floral Dress</h3>
+                        <p class="text-gray-600 text-sm mb-2">Vintage 90's style</p>
+                        <p class="font-bold text-primary">₱799</p>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 border-2 border-light hover:border-secondary">
+                    <div class="relative overflow-hidden">
+                        <img src="https://scontent.fcrk1-5.fna.fbcdn.net/v/t39.30808-6/500651182_1012749607739143_1810207447507323841_n.jpg?_nc_cat=104&cb=99be929b-7bdcbe47&ccb=1-7&_nc_sid=833d8c&_nc_ohc=dP6l1QFlS6AQ7kNvwGAOA_o&_nc_oc=AdlE5sg2qAHkMBMR3XjdGJTosMXlB3AmgV6ktSSLpY8Sxgtk8NRPG_KtlG7Cxg-vsww&_nc_zt=23&_nc_ht=scontent.fcrk1-5.fna&_nc_gid=iMFSqXtAGOPHAt9jYwZq6w&oh=00_AfW5S0QMUKwTK5sNUDI51R9uqJrjEQIUvfcRt5U_CZ7iGA&oe=68A73F98"
+                            alt="Traditional Filipino-inspired skirt" class="w-full h-80 object-cover" />
+                        <div class="absolute top-2 right-2 bg-light rounded-full p-2 shadow-md hover:bg-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-1">Everyday Wear Shoes</h3>
+                        <p class="text-gray-600 text-sm mb-2">Reimagined traditional design</p>
+                        <p class="font-bold text-primary">₱1,499</p>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 border-2 border-light hover:border-secondary">
+                    <div class="relative overflow-hidden">
+                        <img src="https://scontent.fcrk1-4.fna.fbcdn.net/v/t39.30808-6/527042954_1065720225775414_3764126216039965364_n.jpg?_nc_cat=102&cb=99be929b-7bdcbe47&ccb=1-7&_nc_sid=833d8c&_nc_ohc=OQ-XyIGUe0oQ7kNvwEIH4PR&_nc_oc=AdmKxrEsDrgU5yH4ZlBJ7nqS2v2Oc-uR8Dee_7vG3F0NeH0bih4YUaeZTZc5-WeSyaw&_nc_zt=23&_nc_ht=scontent.fcrk1-4.fna&_nc_gid=geuiSB2H1W5Dk6XQ0oetHg&oh=00_AfUkAhIAta0FY18emZwmND6bEw0Shm3Nr61kjAAyKf6HEw&oe=68A72C04"
+                            alt="Distressed jeans with unique embroidery details" class="w-full h-80 object-cover" />
+                        <div class="absolute top-2 right-2 bg-light rounded-full p-2 shadow-md hover:bg-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-1">Casual Wear Tees</h3>
+                        <p class="text-gray-600 text-sm mb-2">Local artisan redesign</p>
+                        <p class="font-bold text-primary">₱1,799</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <button class="btn-primary text-white px-8 py-3 rounded-full text-lg font-medium">View All Products</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Promotions Section -->
+    <section id="promos" class="py-16 bg-light">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="playfair text-3xl md:text-4xl font-bold mb-4 text-primary">Special Promotions</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Limited-time offers and exclusive deals just for you</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Promotion 1 -->
+                <div class="promo-banner rounded-xl overflow-hidden text-white">
+                    <div class="relative h-full">
+                        <img src="https://scontent.fcrk1-5.fna.fbcdn.net/v/t1.15752-9/530365153_1280699523839953_5762177501258658760_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=9f807c&_nc_ohc=emdwyQITMO4Q7kNvwFFOoMT&_nc_oc=Adk9D5lGyNIbMdx35tl5JP8sfEFm5yYdXOzPLsZKiH6zG-oMK3qRnTzwBmTJjMsHekI&_nc_zt=23&_nc_ht=scontent.fcrk1-5.fna&oh=03_Q7cD3AG00LyBAQznHxtQDkpWvJP-Qtgw5kQXLeX4tvnEifcwKw&oe=68C8D910"
+                            alt="Half price sale on all selected dresses with countdown timer" class="w-full object-cover" style="height: 100%;" />
+                        <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent">
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <h3 class="playfair text-2xl font-bold mb-1">50% Off</h3>
+                                    <p class="mb-3">to all customers wearing shades in Store</p>
+                                    <button class="bg-white text-primary px-6 py-2 rounded-full text-sm font-medium">Shop Now</button>
+                                </div>
+                                <div class="countdown-box px-4 py-2 rounded-lg">
+                                    <div class="text-center">
+                                        <p class="text-sm">Ends in</p>
+                                        <div class="font-bold" id="dress-countdown">23:59:59</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promotion 2 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md border-2 border-secondary">
+                    <div class="h-full flex flex-col">
+                        <div class="p-6">
+                            <h3 class="playfair text-2xl font-bold mb-3 text-primary">Buy 2 Get 1 Free</h3>
+                            <p class="text-gray-600 mb-4">For all FOOD PANDA Riders</p>
+                            <div class="flex items-center mb-4">
+                                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium mr-3">Online Only</span>
+                                <span class="text-sm text-gray-500" id="bogo-countdown">Ends in 2 days</span>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <img src="https://scontent.fcrk1-3.fna.fbcdn.net/v/t1.15752-9/529633269_1094537432217586_6522796823920510919_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_ohc=JEGSqqYCzg0Q7kNvwFq2IhL&_nc_oc=AdkNvXFIjVIUudbb9g-TTiWLXx2qwcVTBTDTcPPzlHLIz5A5LIO1VIdCdqRB4wfYnx0&_nc_zt=23&_nc_ht=scontent.fcrk1-3.fna&oh=03_Q7cD3AECLsej--W38Qrsoz1Mm4Yao4p7InduXb6H5w7RrkGYZQ&oe=68C8DDF2"
+                                alt="Buy 2 get 1 free promotion on jeans and jackets" class="w-full h-48 object-cover" style="object-position: 0 -55px;" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promotion 3 -->
+                <div class="promo-banner rounded-xl overflow-hidden text-white">
+                    <div class="relative h-full">
+                        <img src="https://scontent.fcrk1-4.fna.fbcdn.net/v/t39.30808-6/485721465_966526899028081_6063714427242797566_n.jpg?_nc_cat=109&cb=99be929b-7bdcbe47&ccb=1-7&_nc_sid=833d8c&_nc_ohc=pCH0Yiexa3sQ7kNvwHl6xbB&_nc_oc=Adl-L-8xGBJbI5_CKKI7l5KdBmNgbT3zkFfvL85PqzUmXxNIqn4TzT63UsturMIIbsA&_nc_zt=23&_nc_ht=scontent.fcrk1-4.fna&_nc_gid=5wzc3nL511ZWd9oiq0gqBQ&oh=00_AfWDVlAz6b4W4DBtntF-0OF-29WNgT_2JsDfAiNPywWteA&oe=68A71927"
+                            alt="Half price sale on all selected dresses with countdown timer" class="w-full object-cover" style="height: 100%;" />
+                        <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent">
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <h3 class="playfair text-2xl font-bold mb-1">Clearance Sale</h3>
+                                    <p class="mb-3">Selected styles only. Limited stock!</p>
+                                    <button class="bg-white text-primary px-6 py-2 rounded-full text-sm font-medium">Shop Now</button>
+                                </div>
+                                <div class="countdown-box px-4 py-2 rounded-lg">
+                                    <div class="text-center">
+                                        <p class="text-sm">Ends in</p>
+                                        <div class="font-bold" id="dress-countdown">23:59:59</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promotion 4 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md border-2 border-secondary">
+                    <div class="h-full flex flex-col">
+                        <div class="p-6">
+                            <h3 class="playfair text-2xl font-bold mb-3 text-primary">Buy 1 Get 1 Free</h3>
+                            <p class="text-gray-600 mb-4">While Supplies Lasts!</p>
+                            <div class="flex items-center mb-4">
+                                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium mr-3">Online Only</span>
+                                <span class="text-sm text-gray-500" id="bogo-countdown">Ends in 2 days</span>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <img src="https://scontent.fcrk1-4.fna.fbcdn.net/v/t39.30808-6/494351443_996919849322119_4882947756250286613_n.jpg?_nc_cat=102&cb=99be929b-7bdcbe47&ccb=1-7&_nc_sid=833d8c&_nc_ohc=iLxmk-BgXZsQ7kNvwGohFJ0&_nc_oc=Adm9r9dz9HACycuj4Nyb8TdocOLhPIVbs_LMV5ls8KT5jxhnByRIl94zGR1Emj5NuGg&_nc_zt=23&_nc_ht=scontent.fcrk1-4.fna&_nc_gid=3wnfaNWtSk8fbPBEUYOkEQ&oh=00_AfVoe6pveeahmujbHD3Ph6TaWV-AvYn1eb82Nzc9sfBZbw&oe=68A735C1"
+                                alt="Buy 2 get 1 free promotion on jeans and jackets" class="w-full h-48 object-cover" style="object-position: 0 -55px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Small Promotion 1 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-md border-2 border-light hover:border-secondary transition-all duration-300">
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-2 text-primary">Student Discount</h3>
+                        <p class="text-gray-600 text-sm mb-3">10% off with valid school ID</p>
+                        <button class="text-primary text-sm font-medium underline">Show ID in-store</button>
+                    </div>
+                </div>
+
+                <!-- Small Promotion 2 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-md border-2 border-light hover:border-secondary transition-all duration-300">
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-2 text-primary">Birthday Month</h3>
+                        <p class="text-gray-600 text-sm mb-3">15% off on your special month</p>
+                        <button class="text-primary text-sm font-medium underline">Register now</button>
+                    </div>
+                </div>
+
+                <!-- Small Promotion 3 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-md border-2 border-light hover:border-secondary transition-all duration-300">
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-2 text-primary">Loyalty Card</h3>
+                        <p class="text-gray-600 text-sm mb-3">Get stamp for every ₱500 spent</p>
+                        <button class="text-primary text-sm font-medium underline">Learn more</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                    <img src="https://scontent.fcrk1-1.fna.fbcdn.net/v/t39.30808-6/500286502_1010605067953597_5176043269502773990_n.jpg?_nc_cat=108&cb=99be929b-7bdcbe47&ccb=1-7&_nc_sid=833d8c&_nc_ohc=navWTb35Q7QQ7kNvwEvES3u&_nc_oc=AdnFCLY26LbDG_EZEgyaziWByScZ5Ql2C9N6sUXv29hm4_OUjga3fIWc495SI3R7asY&_nc_zt=23&_nc_ht=scontent.fcrk1-1.fna&_nc_gid=Dg14URIvbUVkoc7yrrv3lA&oh=00_AfU303yoveV-TWXD7D5Cz07UxgWwikkARofDC_IajxyXrw&oe=68A71983"
+                        alt="Interior of EL TOROGI store showing clothing racks filled with curated vintage finds" class="rounded-lg shadow-lg w-full" />
+                </div>
+                <div class="lg:w-1/2">
+                    <h2 class="playfair text-3xl md:text-4xl font-bold mb-6 text-primary">Our Filipino Story</h2>
+                    <p class="text-gray-600 mb-4">
+                        EL TOROGI began in 2020 in Ilagan City, with a passion for giving new life to quality pre-loved fashion. We source from local ukay-ukay markets across Luzon and carefully curate each piece to bring you affordable style with character.
+                    </p>
+                    <p class="text-gray-600 mb-6">
+                        Each item is hand-selected for quality, uniqueness, and durability. We wash, repair when needed, and style our finds to help you build a sustainable wardrobe that's both fashionable and kind to our planet.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex-1 min-w-[200px] border-2 border-light">
+                            <h3 class="font-bold mb-2 text-primary">10,000+</h3>
+                            <p class="text-sm text-gray-600">Pieces Restyled</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex-1 min-w-[200px] border-2 border-light">
+                            <h3 class="font-bold mb-2 text-primary">100%</h3>
+                            <p class="text-sm text-gray-600">Affordable Pricing</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex-1 min-w-[200px] border-2 border-light">
+                            <h3 class="font-bold mb-2 text-primary">Eco</h3>
+                            <p class="text-sm text-gray-600">Sustainable Choice</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 bg-light">
+        <div class="container mx-auto px-6 text-center max-w-3xl">
+            <h2 class="playfair text-3xl md:text-4xl font-bold mb-6 text-primary">Join Our Community</h2>
+            <p class="text-gray-600 mb-8">Sign up to get first access to new ukay finds, exclusive deals, and styling tips for your thrifted pieces.</p>
+            <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 border-2 border-light rounded-full focus:outline-none focus:ring-2 focus:ring-secondary">
+                <button class="btn-primary text-white px-6 py-3 rounded-full text-lg font-medium">Subscribe</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-primary text-white pt-16 pb-8">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="playfair text-xl font-bold mb-4">
+                        <img src="eltorogi.png" alt="el torogi logo" style="width: 50px;" class="mr-2"> EL TOROGI
+                    </h3>
+                    <p class="text-light">
+                        Curated vintage finds sourced from across the Philippines, serving fashion lovers in Isabela and beyond.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Shop</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-light hover:text-white">New Arrivals</a></li>
+                        <li><a href="#" class="text-light hover:text-white">Bestsellers</a></li>
+                        <li><a href="#" class="text-light hover:text-white">All Products</a></li>
+                        <li><a href="#" class="text-light hover:text-white">Sale</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Info</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-light hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-light hover:text-white">Sustainability</a></li>
+                        <li><a href="#" class="text-light hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-light hover:text-white">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Visit Us</h4>
+                    <ul class="space-y-2">
+                        <li class="text-light">Northstar Mall, 2nd Floor</li>
+                        <li class="text-light">National Highway, Ilagan City</li>
+                        <li class="text-light">Isabela, Philippines</li>
+                        <li class="text-light">(0927) 654-3210</li>
+                        <li class="text-light">hello@eltorogi.ph</li>
+                    </ul>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-light hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-light hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const indicators = document.querySelectorAll('.indicator');
+            const prevBtn = document.querySelector('.prev');
+            const nextBtn = document.querySelector('.next');
+            let currentIndex = 0;
+            let interval = 5000; // 5 seconds
+            let autoSlideInterval;
+
+            function updateSlide() {
+                const slidesContainer = document.querySelector('.carousel-slides');
+                slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+                // Update active classes
+                slides.forEach((slide, index) => {
+                    slide.classList.toggle('active', index === currentIndex);
+                });
+
+                indicators.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === currentIndex);
+                });
+            }
+
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % slides.length;
+                updateSlide();
+            }
+
+            function prevSlide() {
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                updateSlide();
+            }
+
+            function startAutoSlide() {
+                autoSlideInterval = setInterval(nextSlide, interval);
+            }
+
+            function resetAutoSlide() {
+                clearInterval(autoSlideInterval);
+                startAutoSlide();
+            }
+
+            // Event listeners
+            nextBtn.addEventListener('click', function() {
+                nextSlide();
+                resetAutoSlide();
+            });
+
+            prevBtn.addEventListener('click', function() {
+                prevSlide();
+                resetAutoSlide();
+            });
+
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', function() {
+                    currentIndex = index;
+                    updateSlide();
+                    resetAutoSlide();
+                });
+            });
+
+            // Touch events for mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            const carousel = document.querySelector('.carousel-container');
+
+            carousel.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, {
+                passive: true
+            });
+
+            carousel.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+                resetAutoSlide();
+            }, {
+                passive: true
+            });
+
+            function handleSwipe() {
+                if (touchEndX < touchStartX - 50) {
+                    nextSlide();
+                } else if (touchEndX > touchStartX + 50) {
+                    prevSlide();
+                }
+            }
+
+            // Initialize auto slide
+            startAutoSlide();
+
+            // Pause on hover (desktop only)
+            if (window.matchMedia("(min-width: 768px)").matches) {
+                carousel.addEventListener('mouseenter', function() {
+                    clearInterval(autoSlideInterval);
+                });
+
+                carousel.addEventListener('mouseleave', startAutoSlide);
+            }
+        });
+    </script>
+</body>
+
+</html>
